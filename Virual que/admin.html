@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Admin Panel</h1>
+  <form id="loginForm">
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Log In</button>
+  </form>
+  <div id="adminPanel" style="display:none;">
+    <button id="callNextBtn">Call Next</button>
+    <h2>Queue:</h2>
+    <ul id="queueListAdmin"></ul>
+  </div>
+</div>
+
+<script>
+const loginForm = document.getElementById('loginForm');
+const adminPanel = document.getElementById('adminPanel');
+const queueListAdmin = document.getElementById('queueListAdmin');
+const callNextBtn = document.getElementById('callNextBtn');
+let queue = [];
+
+loginForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  if(username === 'admin' && password === 'admin'){
+    loginForm.style.display = 'none';
+    adminPanel.style.display = 'block';
+    updateAdminQueue();
+  } else {
+    alert('Wrong credentials');
+  }
+});
+
+function updateAdminQueue(){
+  queueListAdmin.innerHTML = '';
+  queue.forEach((person,i)=>{
+    const li = document.createElement('li');
+    li.textContent = `${i+1}. ${person.name} (${person.email}, ${person.phone})`;
+    queueListAdmin.appendChild(li);
+  });
+}
+
+callNextBtn.addEventListener('click', ()=>{
+  if(queue.length>0){
+    queue.shift();
+    updateAdminQueue();
+  }
+});
+</script>
+</body>
+</html>
